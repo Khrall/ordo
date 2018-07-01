@@ -8,22 +8,16 @@ export class Recipe {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @IsNotEmpty()
   @Column()
   thumbnail: string;
 
-  @IsNotEmpty()
-  @MinLength(6)
   @Column()
   title: string;
 
-  @IsNotEmpty()
   @Column('text')
   body: string;
 
-  @Column({
-    default: 4
-  })
+  @Column()
   servings: number;
 
   @OneToMany(type => RecipeIngredient, recipeIngredient => recipeIngredient.recipe)

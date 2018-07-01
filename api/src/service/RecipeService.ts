@@ -15,9 +15,7 @@ export class RecipeService {
   }
 
   public async create(recipe: Recipe): Promise<Recipe> {
-    // this.log.info('Create a new pet => ', pet.toString());
     const newRecipe = await this.repository.save(recipe);
-    // this.eventDispatcher.dispatch(events.pet.created, newPet);
     return newRecipe;
   }
 }
