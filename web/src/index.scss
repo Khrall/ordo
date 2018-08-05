@@ -1,7 +1,14 @@
+// Vendor
 @import '~grommet/grommet.min.css';
-@import './style/landing.scss';
-@import './style/recipe-list.scss';
 
+// Views
+@import './style/landing.scss';
+
+// Components
+@import './style/recipe-list.scss';
+@import './style/button.scss';
+
+// General
 body {
   font-family: sans-serif;
 }
