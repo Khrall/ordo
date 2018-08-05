@@ -1,9 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
+import Landing from './views/landing/Landing';
+
+import './style/compiled/index.css';
 
 ReactDOM.render(
-  <App />,
+  <Landing />,
   document.getElementById('root') as HTMLElement
 );

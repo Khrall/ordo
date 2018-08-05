@@ -21,6 +21,7 @@ createConnection()
   // create express app
   const app = createExpressServer({
     validation: true,
+    cors: true,
     controllers: [RecipeController]
   });
 
