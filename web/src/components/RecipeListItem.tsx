@@ -8,7 +8,7 @@ interface IRecipeListItemProps {
 
 const RecipeListItem: React.SFC<IRecipeListItemProps> = ({ recipe }) => (
   <div className="recipe-list-item">
-    {recipe.title}
+    {recipe.title || 'Untitled Recipe'}
   </div>
 );
 

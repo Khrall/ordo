@@ -1,5 +1,4 @@
 /* tslint:disable:member-access */
-import { MinLength, IsNotEmpty } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RecipeIngredient } from './RecipeIngredient';
 
@@ -8,16 +7,16 @@ export class Recipe {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   thumbnail: string;
 
-  @Column()
+  @Column({ nullable: true })
   title: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   body: string;
 
-  @Column()
+  @Column({ nullable: true })
   servings: number;
 
   @OneToMany(type => RecipeIngredient, recipeIngredient => recipeIngredient.recipe)
