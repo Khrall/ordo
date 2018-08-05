@@ -6,5 +6,8 @@
       "node_modules/**/*.ts"
     ]
   },
-  "defaultSeverity": "warning"
+  "defaultSeverity": "warning",
+  "rules": {
+    "jsx-boolean-value": false
+  }
 }

@@ -1,10 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Landing from './views/landing/Landing';
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import App from './App';
 
 import './style/compiled/index.css';
 
 ReactDOM.render(
-  <Landing />,
+  <Router>
+    <App />
+  </Router>,
   document.getElementById('root') as HTMLElement
 );

@@ -2,7 +2,7 @@ import { IRecipe } from '../ordo';
 
 const recipeUrl = 'http://localhost:4000/recipes';
 
-const getRecipes = () =>
+const getRecipes = ():Promise<IRecipe[]> =>
   fetch(recipeUrl)
   .then(data => data.json());
 

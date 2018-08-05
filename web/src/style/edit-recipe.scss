@@ -1,0 +1,11 @@
+.edit-recipe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 60px;
+
+  .body {
+    margin-top: 30px;
+  }
+}
