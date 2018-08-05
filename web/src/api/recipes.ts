@@ -16,7 +16,18 @@ const createRecipe = () =>
     method: 'POST'
   });
 
+const updateRecipe = (id, recipe) =>
+  fetch(`${recipeUrl}/${id}`, {
+    body: JSON.stringify(recipe),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    method: 'PUT'
+  });
+
 export {
   getRecipes,
-  createRecipe
+  createRecipe,
+  updateRecipe
 }

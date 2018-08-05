@@ -18,4 +18,8 @@ export class RecipeService {
     const newRecipe = await this.repository.save(recipe);
     return newRecipe;
   }
+
+  public async update(id: number, recipe: Recipe) {
+    await this.repository.update(id, recipe);
+  }
 }
