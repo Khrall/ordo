@@ -1,7 +1,6 @@
 /* tslint:disable:member-access */
-import { Get, Post, Body, JsonController } from 'routing-controllers';
+import { Get, Post, Put, Body, Param, OnUndefined, JsonController } from 'routing-controllers';
 import { Inject } from 'typedi';
-import { validate } from 'class-validator';
 
 import { RecipeService } from '../service/RecipeService';
 import { Recipe } from '../entity/Recipe';
@@ -20,5 +19,11 @@ export class RecipeController {
   @Post()
   create(@Body() recipe: Recipe): Promise<Recipe> {
     return this.recipeService.create(recipe);
+  }
+
+  @Put('/:id')
+  @OnUndefined(204)
+  update(@Param('id') id: number, @Body() recipe: Recipe) {
+    return this.recipeService.update(id, recipe);
   }
 }
