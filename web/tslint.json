@@ -8,6 +8,8 @@
   },
   "defaultSeverity": "warning",
   "rules": {
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "object-literal-sort-keys": false,
+    "no-console": false
   }
 }

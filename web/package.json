@@ -9,7 +9,8 @@
     "@types/react": "^16.4.6",
     "@types/react-dom": "^16.0.6",
     "@types/react-router": "^4.0.30",
-    "@types/slate": "^0.33.2",
+    "@types/slate": "^0.40.0",
+    "@types/slate-react": "^0.18.0",
     "react-scripts-ts": "2.16.0",
     "typescript": "^2.9.2"
   },
