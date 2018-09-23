@@ -1,17 +1,49 @@
+@import './colors.scss';
+
 .ordo-button {
-  $btn-color: #00cec9;
+  display: flex;
+  justify-content: center;
   border-radius: 4px;
-  background: $btn-color;
+  background: $color-primary;
   color: #FFF;
   border: none;
   outline: none;
-
+  transition: 0.1s ease;
   padding: 10px 15px;
   cursor: pointer;
 
-  transition: 0.1s ease;
-
   &:hover {
-    background-color: darken($btn-color, 5%);
+    background-color: $color-primary-dark;
   }
+
+  &:disabled {
+    background-color: #CCC;
+    cursor: default;
+  }
+
+  .icon-wrapper {
+    height: 16px;
+    transition: .25s;
+    &.active {
+      margin-left: 10px;
+    }
+
+    svg {
+      &.spin-animation {
+        -webkit-animation: spin 2s linear infinite;
+        -moz-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+      }
+
+      &.grow-animation {
+        animation: grow .25s;
+      }
+    }
+  }
+
 }
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+@keyframes grow { from { transform: scale(0.5); } to { transform: scale(1); }}

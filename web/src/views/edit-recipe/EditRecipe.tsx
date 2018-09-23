@@ -1,13 +1,14 @@
-import { Heading } from 'grommet';
 import { find } from 'lodash';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { Block, Schema, Value } from 'slate';
+import { Block, Schema, Text, Value } from 'slate';
 import { Editor } from 'slate-react';
 
 import { getRecipes, updateRecipe } from '../../api/recipes';
-import Button from '../../components/Button';
+import BottomPanel from '../../components/BottomPanel';
+import Button, { SuccessFailure } from '../../components/Button';
 import { IRecipe } from '../../ordo';
+
 
 interface IEditRecipeProps extends RouteComponentProps<{recipeId: string}> {}
 
@@ -26,20 +27,50 @@ const schema = Schema.create({
     first: { type: 'heading' },
     nodes: [
       { match: { type: 'heading' }, min: 1, max: 1 },
-      { match: { type: 'paragraph' }, min: 1 },
+      { match: { type: 'paragraph' }, min: 1 }
     ],
     normalize: (change, error) => {
+      const type = error.index === 0 ? 'heading' : 'paragraph';
       switch (error.code) {
         case 'child_type_invalid':
-          const type = error.index === 0 ? 'heading' : 'paragraph';
           return change.setNodeByKey(error.child.key, type);
         case 'child_required':
-          const block = Block.create(error.index === 0 ? 'heading' : 'paragraph')
+          const defaultText = type === 'heading' ? 'Your Recipe' : 'Just a few cups of sugar ...';
+          const block = Block.create({
+            type,
+            nodes: Text.createList([Text.create(defaultText)])
+          });
           return change.insertNodeByKey(error.node.key, error.index, block)
       }
     }
   }
 });
+
+/*
+const schema = Schema.create({
+  document: {
+    first: { type: 'heading' },
+    nodes: [
+      { match: { type: 'heading' }, min: 1, max: 1 },
+      { match: { type: 'paragraph' }, min: 1 },
+    ],
+    normalize: (change, error) => {
+      const type = error.index === 0 ? 'heading' : 'paragraph';
+      switch (error.code) {
+        case 'child_type_invalid':
+          return change.setNodeByKey(error.child.key, type);
+        case 'child_required':
+          const defaultText = type === 'heading' ? 'Your Recipe' : 'Just a few cups of sugar ...';
+          const block = Block.create({
+            type,
+            nodes: Text.createList([Text.create(defaultText)])
+          });
+          return change.insertNodeByKey(error.node.key, error.index, block)
+      }
+    }
+  }
+});
+*/
 
 const getInitialValue = () =>
   Value.fromJSON({
@@ -74,6 +105,11 @@ class EditRecipe extends React.Component<IEditRecipeProps, IEditRecipeState> {
     recipe: undefined,
     value: undefined,
     error: undefined
+  }
+
+  constructor(props) {
+    super(props);
+
   }
 
   public componentDidMount() {
@@ -113,12 +149,15 @@ class EditRecipe extends React.Component<IEditRecipeProps, IEditRecipeState> {
       console.log('Could not parse document title');
     }
 
-    updateRecipe(recipe.id, {
-      ...recipe,
-      title,
-      body: JSON.stringify(value)
-    })
-    .then(() => console.log('Saved!'));
+    return new Promise<SuccessFailure>((resolve, reject) => {
+      updateRecipe(recipe.id, {
+        ...recipe,
+        title,
+        body: JSON.stringify(value)
+      })
+      .then(() => resolve('success'))
+      .catch(reject)
+    });
   }
 
   public render() {
@@ -139,14 +178,18 @@ class EditRecipe extends React.Component<IEditRecipeProps, IEditRecipeState> {
 
     return (
       <div className="edit-recipe">
-        <Editor
-          className="edit-recipe-editor"
-          value={value}
-          onChange={this.onChange}
-          schema={schema}
-          renderNode={this.renderNode}
-        />
-        <Button label="Save" onClick={this.save} />
+        <div className="content-wrapper">
+          <Editor
+            className="edit-recipe-editor"
+            value={value}
+            onChange={this.onChange}
+            schema={schema}
+            renderNode={this.renderNode}
+          />
+        </div>
+        <BottomPanel>
+          <Button label="Save" onClick={this.save} />
+        </BottomPanel>
       </div>
     );
   }

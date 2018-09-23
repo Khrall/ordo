@@ -1,18 +1,14 @@
 .edit-recipe {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 
-  padding-top: 60px;
+  .content-wrapper {
+    padding-top: 60px;
+    padding-bottom: 120px;
+  }
 
   .edit-recipe-editor {
     margin-top: 30px;
     width: 700px;
     max-width: 90%;
     margin: 0 auto;
-  }
-
-  button {
-    margin-top: 30px;
   }
 }

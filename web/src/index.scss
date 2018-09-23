@@ -1,6 +1,9 @@
 // Vendor
 @import '~grommet/grommet.min.css';
 
+// Meta
+@import './style/colors.scss';
+
 // Views
 @import './style/landing.scss';
 @import './style/edit-recipe.scss';
@@ -8,6 +11,7 @@
 // Components
 @import './style/recipe-list.scss';
 @import './style/button.scss';
+@import './style/bottom-panel.scss';
 
 // General
 body {
