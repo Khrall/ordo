@@ -1,0 +1,51 @@
+{
+    "name": "@types/slate-react",
+    "version": "0.18.0",
+    "description": "TypeScript definitions for slate-react",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Andy Kent",
+            "url": "https://github.com/andykent",
+            "githubUsername": "andykent"
+        },
+        {
+            "name": "Jamie Talbot",
+            "url": "https://github.com/majelbstoat",
+            "githubUsername": "majelbstoat"
+        },
+        {
+            "name": "Jan Löbel",
+            "url": "https://github.com/JanLoebel",
+            "githubUsername": "JanLoebel"
+        },
+        {
+            "name": "Patrick Sachs",
+            "url": "https://github.com/PatrickSachs",
+            "githubUsername": "PatrickSachs"
+        },
+        {
+            "name": "Brandon Shelton",
+            "url": "https://github.com/YangusKhan",
+            "githubUsername": "YangusKhan"
+        },
+        {
+            "name": "Irwan Fario Subastian",
+            "url": "https://github.com/isubasti",
+            "githubUsername": "isubasti"
+        }
+    ],
+    "main": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+    },
+    "scripts": {},
+    "dependencies": {
+        "immutable": "^3.8.2",
+        "@types/slate": "*",
+        "@types/react": "*"
+    },
+    "typesPublisherContentHash": "da8d4aaeb6c8ec576b66e9e565fe2e2abbcda0e6321e583e3f0107b08f08fb47",
+    "typeScriptVersion": "2.8"
+}

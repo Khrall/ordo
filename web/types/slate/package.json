@@ -1,0 +1,54 @@
+{
+    "name": "@types/slate",
+    "version": "0.40.0",
+    "description": "TypeScript definitions for slate",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Andy Kent",
+            "url": "https://github.com/andykent",
+            "githubUsername": "andykent"
+        },
+        {
+            "name": "Jamie Talbot",
+            "url": "https://github.com/majelbstoat",
+            "githubUsername": "majelbstoat"
+        },
+        {
+            "name": "Jan Löbel",
+            "url": "https://github.com/JanLoebel",
+            "githubUsername": "JanLoebel"
+        },
+        {
+            "name": "Brandon Shelton",
+            "url": "https://github.com/YangusKhan",
+            "githubUsername": "YangusKhan"
+        },
+        {
+            "name": "Kalley Powell",
+            "url": "https://github.com/kalley",
+            "githubUsername": "kalley"
+        },
+        {
+            "name": "Francesco Agnoletto",
+            "url": "https://github.com/Kornil",
+            "githubUsername": "Kornil"
+        },
+        {
+            "name": "Irwan Fario Subastian",
+            "url": "https://github.com/isubasti",
+            "githubUsername": "isubasti"
+        }
+    ],
+    "main": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git"
+    },
+    "scripts": {},
+    "dependencies": {
+        "immutable": "^3.8.2"
+    },
+    "typesPublisherContentHash": "a8c9fdba0090ad534df0be83e827f1c66e7006541e90e14a040e83c0a21685cc",
+    "typeScriptVersion": "2.3"
+}
