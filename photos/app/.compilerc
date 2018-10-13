@@ -1,0 +1,9 @@
+{
+  "application/javascript": {
+    "presets": ["react", "es2017-node7"],
+    "plugins": ["react-hot-loader/babel"]
+  },
+  "text/typescript":{
+    "jsx": "react"
+  }
+}

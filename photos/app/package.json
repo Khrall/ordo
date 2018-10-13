@@ -1,0 +1,23 @@
+{
+  "name": "ordo-photos-app",
+  "version": "0.1.0",
+  "main": "src/main.ts",
+  "author": "Khrall",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "styled-components": "^3.4.10"
+  },
+  "devDependencies": {
+    "@types/node": "^10.11.7",
+    "@types/styled-components": "^4.0.1",
+    "react-hot-loader": "^4.3.11",
+    "babel-preset-es2017-node7": "^0.5.2",
+    "electron-prebuilt-compile": "^3.0.2"
+  }
+}
