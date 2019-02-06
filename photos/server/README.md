@@ -16,6 +16,12 @@ docker run -p 9000:9000 -e "MINIO_ACCESS_KEY=admin" -e "MINIO_SECRET_KEY=passwor
 
 You should now be able to open the minio browser at http://localhost:9000/minio/ .
 
+Start a `mongodb` server using docker with
+
+```
+docker run -p 27017:27017 mongo
+```
+
 Run Photos Server with
 
 ```
