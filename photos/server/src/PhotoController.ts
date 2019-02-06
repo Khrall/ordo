@@ -1,4 +1,4 @@
-import { JsonController, Param, Body, Get, Post, Put, Delete } from 'routing-controllers';
+import { JsonController, Body, Get, Post, QueryParam } from 'routing-controllers';
 import * as Minio from 'minio';
 import { includes } from 'lodash';
 
@@ -34,6 +34,20 @@ export class WebController {
         .then(withUrls => resolve(withUrls))
         .catch(errors => console.log(errors));
       });
+    });
+  }
+
+  @Get()
+  public getPhotos(
+    @QueryParam('limit') qLimit: number,
+    @QueryParam('before') qBefore: Date
+  ) {
+    const limit = qLimit || 10;
+    const before = qBefore || new Date('1970-01-01');
+    return Photo
+      .find({ createdDate: { $lt: before } }).limit(limit).sort({ createdDate: -1 })
+      .lean().exec().then(photos => {
+      return photos.map(p => ({ ...p, _id: p._id.toString() }));
     });
   }
 }

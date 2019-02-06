@@ -8,21 +8,21 @@ Install dependencies with
 yarn
 ```
 
-Start `minio` file-server using docker with
+Start a `minio` file-server and a `mongo` server using docker with:
 
 ```
-docker run -p 9000:9000 -e "MINIO_ACCESS_KEY=admin" -e "MINIO_SECRET_KEY=password" minio/minio server /data
+docker-compose up
 ```
 
-You should now be able to open the minio browser at http://localhost:9000/minio/ .
+> Note: You need to have `photos/server/` as your working directory when calling `docker-compise up` in order for it to pick up `docker-compose.yml`.
 
-Start a `mongodb` server using docker with
+You should now be able to open the minio browser at http://localhost:9000/minio/ and log in using the default `admin`/`password` credentials.
 
-```
-docker run -p 27017:27017 mongo
-```
+Once logged in, create a new bucket called `test-bucket`.
 
-Run Photos Server with
+Last step before running the server is creating a new database on your `mongo` server called `ordo`. Feel free to use any cli/client for this - I recommend using [Robo 3T](https://robomongo.org/).
+
+With that out of the way, you should be able to run the Photos server with
 
 ```
 yarn start
@@ -34,7 +34,9 @@ The server is created using TypeScript-powered Express libraries. The most impor
 
 This library in turn also uses [class-validator](https://github.com/typestack/class-validator) which allows us to define and automatically validate the expected bodies of POST/PUT requests, based on a class definition such as `PhotoObject.ts`.
 
-Finally, the actual files are hosted by a [minio](https://docs.minio.io/) file-server (see [minio-js](https://github.com/minio/minio-js) for js-documentation). Photos Server only handles the generation of pre-signed URLs that can be used to send requests to the `minio` server on the user's client (See: [minio pre-signed urls](https://docs.minio.io/docs/upload-files-from-browser-using-pre-signed-urls.html)).
+The actual files are hosted by a [minio](https://docs.minio.io/) file-server (see [minio-js](https://github.com/minio/minio-js) for js-documentation). Photos Server only handles the generation of pre-signed URLs that can be used to send requests to the `minio` server on the user's client (See: [minio pre-signed urls](https://docs.minio.io/docs/upload-files-from-browser-using-pre-signed-urls.html)).
+
+Any additional metadata about the photos is stored on a [mongo](https://www.mongodb.com/) database. This allows us to query based on the different properties of our photos.
 
 ## Endpoints
 
