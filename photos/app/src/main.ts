@@ -1,5 +1,5 @@
 import { app, BrowserWindow } from 'electron';
-import {enableLiveReload} from 'electron-compile';
+import { enableLiveReload } from 'electron-compile';
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 

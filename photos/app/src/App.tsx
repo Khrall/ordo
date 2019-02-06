@@ -1,57 +1,31 @@
 import * as React from 'react';
-import { hot } from 'react-hot-loader';
-import styled from 'styled-components';
+import { Grommet } from 'grommet';
+import { HashRouter as Router, Route } from 'react-router-dom';
+import { createGlobalStyle } from 'styled-components';
 
-import { createFile } from './file-creator';
+import { HeaderView } from './views/header-view/HeaderView';
+import { InitialView } from './views/initial-view/InitialView';
+import { FileSyncView } from './views/file-sync-view/FileSyncView';
 
-const AppContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const AppWrapper = styled.div`
-  display: flex;
-
-  align-items: center;
-`;
-
-const Header = styled.h1`
-  font-family: 'Open Sans', sans-serif;
-`;
-
-const Button = styled.button`
-  background: #81ecec;
-  border-radius: 4px;
-  font-size: 16px;
-  font-family: 'Open Sans', sans-serif;
-  border: none;
-  color: #FFF;
-  transition: 0.1s ease;
-  padding: 8px 16px;
-  cursor: pointer;
-
-  &:hover {
-    background: #00cec9;
-  }
-
-  &:focus {
-    outline: none;
+const GlobalStyle = createGlobalStyle`
+  body, html, #app, #app > div {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
   }
 `;
 
-export class App extends React.Component<{}, {}> {
-  public render() {
-    return (
-      <AppContainer>
-        <Header>Hello World!</Header>
-        <Button onClick={createFile}>Create File!</Button>
-      </AppContainer>
-    );
-  }
-}
+const App = () => (
+  <Router>
+    <Grommet>
+      <GlobalStyle />
+      <HeaderView />
+      <Route exact path="/" component={InitialView} />
+      <Route path="/file-sync" component={FileSyncView} />
+    </Grommet>
+  </Router>
+);
 
-export default hot(module)(App);
+export default App;
