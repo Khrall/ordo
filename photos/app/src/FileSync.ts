@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as nodeFetch from 'node-fetch';
 import * as hasha from 'hasha';
 import { chunk } from 'lodash';
+import * as exif from 'fast-exif';
+import * as moment from 'moment';
 
 import { ImageFile } from './local-images';
 
@@ -42,7 +44,8 @@ export class FileSync {
       if (batchIndex < batches.length) {
         const nextBatch = batches[batchIndex++];
         Promise.all(nextBatch.map(withHash))
-          .then(withHashes => withHashes.map(withName))
+          .then(withHashes => Promise.all(withHashes.map(withCreatedDate)))
+          .then(withMeta => withMeta.map(withName))
           .then(addPresignedUrls)
           .then(withUrls =>
             Promise.all(withUrls.map(createFile))
@@ -100,7 +103,45 @@ const withHash = (imageFile: ImageFile) => hasha
   .fromFile(imageFile.path, {algorithm: HASHING_ALGORITHM})
   .then(hash => ({ ...imageFile, hash }));
 
+const withCreatedDate = imageFile =>
+  exif.read(imageFile.path)
+  .then(metadata => {
+    if (metadata === null || !metadata.exif.DateTimeOriginal) {
+      console.log('Could not find exif metadata for', imageFile,
+      'attempting to extract date from file path');
+
+      const parentFolder = getParentFolder(imageFile.path);
+      const dateFromFolder = getDateFromPhotosLibraryFolder(parentFolder);
+      if (dateFromFolder === undefined) {
+        console.log('Could not extract date from file path');
+        return { ...imageFile, createdDate: new Date() };
+      }
+
+      console.log('Extracted', dateFromFolder, 'from folder:', parentFolder);
+      return { ...imageFile, createdDate: dateFromFolder };
+    }
+    return {
+      ...imageFile,
+      createdDate: metadata.exif.DateTimeOriginal
+    };
+  });
+
 const withName = imageFile => ({
   ...imageFile,
   name: imageFile.path.split('/').pop()
 });
+
+// Gets parent folder of a file given the file's path.
+// Example: ('/a/b/c.jpg') => 'b'
+const getParentFolder = (path: string) =>
+  path.split('/').slice(-2)[0];
+
+// Given a folder name from Photos Library with a date format,
+// parses the date and returns as a Date object.
+// If folder name is not properly formated, returns undefined
+const getDateFromPhotosLibraryFolder = (folderName: string): Date | undefined => {
+  // Should match folder names of the form YYYYMMDD-HHmmss
+  const matcher = folderName.match(/^[0-9]{8}-[0-9]{6}$/);
+  return matcher === null ? undefined
+  : moment(folderName, 'YYYYMMDD-HHmmss').toDate();
+};

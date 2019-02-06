@@ -70,8 +70,7 @@ export class FileSyncView extends React.Component<{}, IFileSyncViewState> {
 
   public startSync = () => {
     getLocalImageFiles().then(imageFiles => {
-      const sample = imageFiles.slice(0, 10);
-      fileSync.startSync(sample, this.onFileSyncUpdate);
+      fileSync.startSync(imageFiles, this.onFileSyncUpdate);
     });
   }
   public onFileSyncUpdate = (syncState: ISyncState) => this.setState({ syncState });

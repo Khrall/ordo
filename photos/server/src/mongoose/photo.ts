@@ -18,6 +18,7 @@ export interface IPhoto extends mongoose.Document {
 export const PhotoSchema = new mongoose.Schema({
     name: {type: String, required: true},
     hash: {type: String, required: true},
+    createdDate: {type: Date, required: true},
 });
 
 const Photo = mongoose.model('Photo', PhotoSchema);

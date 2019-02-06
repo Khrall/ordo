@@ -2,6 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import { PhotoStream } from './PhotoStream';
+
 const InitialViewContainer = styled.div`
   width: 100%;
   height: calc(100% - 48px - 30px);
@@ -42,6 +44,7 @@ export class InitialView extends React.Component<{}, {}> {
       <Link to="/file-sync" >
         <Button>Sync Files</Button>
       </Link>
+      <PhotoStream />
     </InitialViewContainer>
   )
 }
