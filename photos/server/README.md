@@ -14,7 +14,7 @@ Start a `minio` file-server and a `mongo` server using docker with:
 docker-compose up
 ```
 
-> Note: You need to have `photos/server/` as your working directory when calling `docker-compise up` in order for it to pick up `docker-compose.yml`.
+> Note: You need to have `photos/server/` as your working directory when calling `docker-compose up` in order for it to pick up `docker-compose.yml`.
 
 You should now be able to open the minio browser at http://localhost:9000/minio/ and log in using the default `admin`/`password` credentials.
 
@@ -40,18 +40,24 @@ Any additional metadata about the photos is stored on a [mongo](https://www.mong
 
 ## Endpoints
 
-For now there's only a single end-point:
-
 ```
-POST: http://localhost:4000/photo/create
+POST: http://localhost:4000/photo/sync
 ```
 
 The POST request needs to have content-type set to `application/json`, and the body needs to follow the class definition in `PhotoObject.ts`:
 
 ```
 {
-  name: string
+  name: string,
+  hash: string,
+  createdDate: Date
 }
 ```
 
-This will return a pre-signed URL, which can be used to upload an object to the `minio` server. An example of how to use this can be found in the Photos App (`file-creator.ts`).
+This will return a pre-signed URL, which can be used to upload an object to the `minio` server. An example of how to use this can be found in the Photos App (`FileSync.ts`).
+
+```
+GET: http://localhost:4000/photo?limit={numPhotosToReturn}&before={maxDate}
+```
+
+This will return up to `{numPhotosToReturn}` photos that have a `createdDate` smaller than `{maxDate}`.
