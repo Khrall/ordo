@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { Meter } from 'grommet';
 
 import { ISyncState, SyncStatus, FileSync } from '../../FileSync';
@@ -89,9 +88,6 @@ export class FileSyncView extends React.Component<{}, IFileSyncViewState> {
     return (
       <FileSyncViewContainer>
         <Title>Ready to sync?</Title>
-        <Link to="/">
-          <Button>Go back</Button>
-        </Link>
         <Button onClick={this.startSync}>Start sync</Button>
         <Meter values={meterValues} size="full"  />
         <Details>
