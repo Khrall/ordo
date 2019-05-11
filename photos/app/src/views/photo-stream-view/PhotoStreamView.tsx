@@ -60,7 +60,6 @@ export class PhotoStreamView extends React.Component<{}, IPhotoStreamState> {
 
   public toggleViewMode = () => {
     const { viewMode } = this.state;
-    console.log('Old viewmode was', viewMode, 'toggling ...');
     if (viewMode === 'grid') {
       this.setState({ viewMode: 'timeline' });
     } else {
