@@ -7,7 +7,10 @@ let win: BrowserWindow;
 
 const createWindow = () => {
   enableLiveReload({ strategy: 'react-hmr' });
-  win = new BrowserWindow();
+  win = new BrowserWindow({
+    width: 1400,
+    height: 700
+  });
   win.loadFile('src/index.html');
 
   win.webContents.openDevTools();
