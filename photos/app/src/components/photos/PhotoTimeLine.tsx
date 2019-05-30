@@ -25,7 +25,7 @@ export const PhotoTimeLine = (props: IPhotoTimeLineProps) => (
       props.photos.map(photo => (
         <Photo
           key={photo._id}
-          src={`http://localhost:9000/test-bucket/${photo.hash}-${photo.name}`}
+          src={`http://localhost:9000/test-bucket/medium/${photo.hash}-${photo.name}`}
         />
       ))
     }

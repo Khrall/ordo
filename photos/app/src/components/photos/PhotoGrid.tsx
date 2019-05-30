@@ -27,7 +27,7 @@ export const PhotoGrid = (props: IPhotoGridProps) => (
       props.photos.map(photo => (
         <Photo
           key={photo._id}
-          src={`http://localhost:9000/test-bucket/${photo.hash}-${photo.name}`}
+          src={`http://localhost:9000/test-bucket/small/${photo.hash}-${photo.name}`}
         />
       ))
     }
