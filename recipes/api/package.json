@@ -19,7 +19,7 @@
       "reflect-metadata": "^0.1.10",
       "routing-controllers": "^0.7.7",
       "typedi": "^0.7.2",
-      "typeorm": "0.2.4",
+      "typeorm": "0.2.25",
       "typeorm-typedi-extensions": "^0.2.1",
       "yarn": "^1.6.0"
    },
