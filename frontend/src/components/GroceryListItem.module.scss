@@ -1,0 +1,79 @@
+@use '../style/colors.scss' as c;
+
+$itemHeight: 32px;
+$fontSize: 12;
+$iconOffset: 4px;
+
+.wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.background {
+  height: $itemHeight;
+  display: flex;
+  transition: font-size 0.2s ease-in-out;
+}
+
+.complete,
+.trash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  text-align: center;
+}
+
+.trash {
+  margin-left: $iconOffset;
+}
+
+.complete {
+  margin-left: auto;
+  margin-right: $iconOffset;
+}
+
+.groceryListItem {
+  width: 100%;
+  height: $itemHeight;
+  position: absolute;
+  top: 0;
+  background-color: c.$background-color;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+
+  > p {
+    position: relative;
+    animation-name: fadeIn;
+    animation-duration: 0.3s;
+    animation-timing-function: ease-in-out;
+    margin-left: 12px;
+    font-size: $fontSize;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.amount {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  color: #ccc;
+  margin-right: 30px;
+  font-size: $fontSize;
+
+  > span {
+    position: relative;
+    margin: 0 12px;
+    font-size: $fontSize;
+  }
+}

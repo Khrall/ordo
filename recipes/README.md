@@ -1,3 +1,0 @@
-# Ordo Recipes
-
-Collect recipes.

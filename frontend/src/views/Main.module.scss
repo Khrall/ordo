@@ -1,0 +1,143 @@
+@use '../style/colors.scss' as c;
+
+$actionsMenuHeight: 48px;
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.groceryList {
+  margin-top: 20px;
+  padding-bottom: calc($actionsMenuHeight + 12px);
+
+  div.section {
+    &:not(:first-child) {
+      margin-top: 20px;
+    }
+  }
+
+  p.sectionHeader {
+    padding: 0 4px;
+    font-weight: normal;
+    font-size: 14px;
+    color: #ccc;
+  }
+}
+
+.itemSearch {
+  width: 100%;
+  background: c.$card-dark-background;
+}
+
+.suggestions {
+  > div {
+    background: darken(c.$card-dark-background, 2%);
+    padding: 16px 12px;
+    border-bottom: 1px solid #000;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.suggestionIsInTodoList {
+  margin-left: auto;
+  font-size: 12px;
+  border: 1px solid c.$btn-outline-disabled-color;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: c.$text-color-dark-secondary;
+}
+
+.itemSearchForm {
+  display: flex;
+  input {
+    flex-grow: 1;
+    height: 30px;
+    margin-right: 8px;
+    padding: 10px 12px;
+    font-size: 16px;
+
+    background: none;
+    border: none;
+    outline: none;
+
+    color: #ccc;
+
+    transition: 0.2s ease;
+
+    &::placeholder {
+      color: darken(#ccc, 30%);
+      opacity: 1;
+    }
+  }
+
+  button {
+    position: relative;
+    top: 3px;
+    color: darken(#ccc, 30%);
+    font-size: 16px;
+    border: none;
+    background: none;
+    transition: 0.2s ease;
+    outline: none;
+    padding: 0;
+    margin-right: 20px;
+  }
+}
+
+button.resetInputButton {
+  margin-left: auto;
+}
+
+button.addItemButton {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.actionsMenu {
+  position: fixed;
+  bottom: 0;
+  height: $actionsMenuHeight;
+  width: calc(100% - 32px);
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: c.$card-dark-background;
+}
+
+.leftAction,
+.centerAction,
+.rightAction {
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+
+  transition: 0.2s ease;
+
+  &.active {
+    background-color: c.$btn-flat-default-bg-color;
+  }
+
+  &.disabled {
+    color: c.$text-color-gray-on-dark;
+  }
+}
+.centerAction,
+.rightAction {
+  background-color: c.$card-dark-border-color;
+}
+.leftAction {
+}
+.centerAction {
+  width: 48px;
+}
+.rightAction {
+}

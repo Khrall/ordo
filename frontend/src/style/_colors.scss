@@ -1,0 +1,56 @@
+$teal: (
+    50: #f0fdfa,
+    100: #ccfbf1,
+    200: #99f6e4,
+    300: #5eead4,
+    400: #2dd4bf,
+    500: #14b8a6,
+    600: #0d9488,
+    700: #0f766e,
+    800: #115e59,
+    900: #134e4a,
+    950: #042f2e,
+);
+
+// Background
+$background-color: #0E0E12;
+
+// UI Colors
+$primary-ui-color: map-get($teal, 500);
+$secondary-ui-color: map-get($teal, 300);
+
+// Banners
+$banner-dark-background: map-get($teal, 950);
+$banner-dark-icon-primary: map-get($teal, 400);
+$banner-dark-icon-secondary: map-get($teal, 900);
+
+$banner-light-background: map-get($teal, 950);
+$banner-light-icon-primary: map-get($teal, 300);
+$banner-light-icon-secondar: map-get($teal, 900);
+
+// Text
+$text-color-light-primary: map-get($teal, 50);
+$text-color-light-secondary: map-get($teal, 100);
+
+$text-color-dark-primary: map-get($teal, 950);
+$text-color-dark-secondary: map-get($teal, 600);
+
+$text-color-gray-on-dark: #777;
+
+// Buttons
+$btn-flat-default-bg-color: map-get($teal, 500);
+$btn-flat-hover-bg-color: map-get($teal, 600);
+$btn-flat-active-bg-color: map-get($teal, 700);
+$btn-flat-disabled-bg-color: map-get($teal, 950);
+$btn-flat-disabled-text-color: map-get($teal, 700);
+
+$btn-outline-default-color: map-get($teal, 600);
+$btn-outline-hover-color: map-get($teal, 700);
+$btn-outline-active-color: map-get($teal, 800);
+$btn-outline-disabled-color: map-get($teal, 900);
+
+// Cards
+$card-dark-background: #18181B;
+$card-dark-border-color: #27272a;
+
+// Input fields?
