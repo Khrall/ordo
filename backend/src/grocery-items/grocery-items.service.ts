@@ -1,29 +1,32 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateGroceryItemDto } from './dto/create-grocery-item.dto';
 import { UpdateGroceryItemDto } from './dto/update-grocery-item.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class GroceryItemsService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   create(createGroceryItemDto: CreateGroceryItemDto) {
-    return 'This action adds a new groceryItem';
+    return this.prisma.groceryListItem.create({ data: createGroceryItemDto });
   }
 
   findAll() {
-    return `This action returns all groceryItems`;
+    return this.prisma.groceryListItem.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} groceryItem`;
+  findOne(id: string) {
+    return this.prisma.groceryListItem.findUnique({ where: { id } });
   }
 
-  update(id: number, updateGroceryItemDto: UpdateGroceryItemDto) {
-    return `This action updates a #${id} groceryItem`;
+  update(id: string, updateGroceryItemDto: UpdateGroceryItemDto) {
+    return this.prisma.groceryListItem.update({
+      where: { id },
+      data: updateGroceryItemDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} groceryItem`;
+  remove(id: string) {
+    return this.prisma.groceryListItem.delete({ where: { id } });
   }
 }

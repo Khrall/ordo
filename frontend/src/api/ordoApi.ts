@@ -8,8 +8,7 @@ export type ItemType = {
 export type GroceryListItem = {
   id: string;
   type: ItemType;
-  status: 'todo' | 'picked up' | 'bought';
-  pickedUpAt?: Date;
+  status: 'todo' | 'bought';
   boughtAt?: Date;
   amount: number;
 };

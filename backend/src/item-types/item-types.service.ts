@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateItemTypeDto } from './dto/create-item-type.dto';
 import { UpdateItemTypeDto } from './dto/update-item-type.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ItemTypesService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   create(createItemTypeDto: CreateItemTypeDto) {
-    return this.prisma.itemType.create({ data: createItemTypeDto })
+    return this.prisma.itemType.create({ data: createItemTypeDto });
   }
 
   findAll() {
@@ -20,7 +20,10 @@ export class ItemTypesService {
   }
 
   update(id: string, updateItemTypeDto: UpdateItemTypeDto) {
-    return this.prisma.itemType.update({ where: { id }, data: updateItemTypeDto });
+    return this.prisma.itemType.update({
+      where: { id },
+      data: updateItemTypeDto,
+    });
   }
 
   remove(id: string) {

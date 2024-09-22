@@ -1,14 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ItemTypesService } from './item-types.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CreateItemTypeDto } from './dto/create-item-type.dto';
 import { UpdateItemTypeDto } from './dto/update-item-type.dto';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ItemTypeEntity } from './entities/item-type.entity';
+import { ItemTypesService } from './item-types.service';
 
 @Controller('item-types')
 @ApiTags('item types')
 export class ItemTypesController {
-  constructor(private readonly itemTypesService: ItemTypesService) { }
+  constructor(private readonly itemTypesService: ItemTypesService) {}
 
   @Post()
   @ApiCreatedResponse({ type: ItemTypeEntity })
@@ -30,7 +38,10 @@ export class ItemTypesController {
 
   @Patch(':id')
   @ApiOkResponse({ type: ItemTypeEntity })
-  update(@Param('id') id: string, @Body() updateItemTypeDto: UpdateItemTypeDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateItemTypeDto: UpdateItemTypeDto,
+  ) {
     return this.itemTypesService.update(id, updateItemTypeDto);
   }
 
