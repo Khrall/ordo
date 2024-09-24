@@ -5,7 +5,7 @@ import { GroceryListItem, ItemType } from './ordoApi';
 
 export const mockItemTypes: ItemType[] = [
   {
-    id: uuidv4(),
+    id: '80d159d9-ae74-4e7b-a085-2ffa8f18c922',
     name: 'Skummet melk',
     amountMetric: 'kartong',
     amountMultiplier: 1,
@@ -18,7 +18,7 @@ export const mockItemTypes: ItemType[] = [
   },
   { id: uuidv4(), name: 'Eple', amountMetric: 'stk', amountMultiplier: 1 },
   {
-    id: uuidv4(),
+    id: 'cdad6cc1-c621-43b0-9645-026fd7e782a5',
     name: 'Havregryn',
     amountMetric: 'pakke',
     amountMultiplier: 1,

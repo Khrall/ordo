@@ -1,11 +1,12 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import classNames from 'classnames';
 import { format } from 'date-fns';
 import { capitalize, find, initial, last } from 'lodash';
 import { useMemo, useState } from 'react';
 import { FaBasketShopping, FaRotateLeft, FaXmark } from 'react-icons/fa6';
 import { v4 as uuidv4 } from 'uuid';
-import { mockGroceryList, mockItemTypes } from '../api/mockData';
-import { GroceryListItem, ItemType } from '../api/ordoApi';
+
+import { GroceryListItem, ItemType, ordoApi } from '../api/ordoApi';
 import CompletedGroceryListItem from '../components/CompletedGroceryListItem';
 import TodoGroceryListItem from '../components/TodoGroceryListItem';
 import styles from './Main.module.scss';
@@ -29,11 +30,73 @@ type Suggestion = ItemType & {
 function Main() {
   const [isShopping, setIsShopping] = useState<boolean>(false);
   const [history, setHistory] = useState<GroceryHistory>([]);
-  const [groceryItems, setGroceryItems] =
-    useState<GroceryListItem[]>(mockGroceryList);
-  const [itemTypes, setItemTypes] = useState<ItemType[]>(mockItemTypes);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [inputValue, setInputValue] = useState('');
+
+  const queryClient = useQueryClient();
+
+  const {
+    isPending: groceryItemsPending,
+    data: groceryItems,
+    error: groceryItemsError,
+  } = useQuery({
+    queryKey: ['grocery-items'],
+    queryFn: ordoApi.getGroceryItems,
+  });
+
+  const {
+    isPending: itemTypesPending,
+    data: itemTypes,
+    error: itemTypesError,
+  } = useQuery({ queryKey: ['item-types'], queryFn: ordoApi.getItemTypes });
+
+  const createItemType = useMutation({
+    mutationFn: ordoApi.createItemType,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['item-types'] });
+    },
+  });
+
+  const updateItemType = useMutation({
+    mutationFn: ordoApi.updateItemType,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['item-types'] });
+    },
+  });
+
+  const deleteItemType = useMutation({
+    mutationFn: ordoApi.deleteItemType,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['item-types'] });
+    },
+  });
+
+  const createGroceryItem = useMutation({
+    mutationFn: ordoApi.createGroceryItem,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['grocery-items'] });
+    },
+  });
+
+  const updateGroceryItem = useMutation({
+    mutationFn: ordoApi.updateGroceryItem,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['grocery-items'] });
+    },
+  });
+
+  const deleteGroceryItem = useMutation({
+    mutationFn: ordoApi.deleteGroceryItem,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['grocery-items'] });
+    },
+  });
 
   const undo = () => {
     const lastEvent = last(history);
@@ -63,7 +126,7 @@ function Main() {
     const value = e.target.value;
     setInputValue(value);
 
-    if (value === '') {
+    if (value === '' || itemTypes == null) {
       setSuggestions([]);
     } else {
       const suggestions: Suggestion[] = itemTypes
@@ -81,8 +144,17 @@ function Main() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (itemTypes == null) {
+      // TODO: Handle
+      console.error(
+        `Expected itemTypes to have been fetched, but they do not seem to have been.`
+      );
+      return;
+    }
+
     resetInputValue();
 
     // Search for matching item type
@@ -92,13 +164,11 @@ function Main() {
 
     if (itemType === undefined) {
       // Create new item type
-      itemType = {
-        id: uuidv4(),
+      itemType = await createItemType.mutateAsync({
         name: capitalize(inputValue),
         amountMetric: 'stk',
         amountMultiplier: 1,
-      };
-      setItemTypes([...itemTypes, itemType]);
+      });
     }
 
     addGroceryItem(
@@ -114,7 +184,10 @@ function Main() {
 
   const addGroceryItem = (item: GroceryListItem, saveInHistory: boolean) => {
     console.debug('Add', item);
-    setGroceryItems((groceryItems) => [...groceryItems, item]);
+    createGroceryItem.mutate({
+      ...item,
+      typeId: item.type.id,
+    });
     if (saveInHistory) {
       setHistory((history) => [
         ...history,
@@ -128,9 +201,7 @@ function Main() {
 
   const removeGroceryItem = (item: GroceryListItem, saveInHistory: boolean) => {
     console.debug('Remove', item);
-    setGroceryItems((groceryItems) =>
-      groceryItems.filter(({ id }) => item.id !== id)
-    );
+    deleteGroceryItem.mutate(item.id);
     if (saveInHistory) {
       setHistory((history) => [
         ...history,
@@ -142,51 +213,35 @@ function Main() {
     }
   };
 
-  const increaseAmount = (
-    itemToIncreaseAmount: GroceryListItem,
-    saveInHistory: boolean
-  ) => {
-    setGroceryItems((groceryItems) =>
-      groceryItems.map((item) =>
-        item.id !== itemToIncreaseAmount.id
-          ? item
-          : {
-              ...item,
-              amount: item.amount + item.type.amountMultiplier,
-            }
-      )
-    );
+  const increaseAmount = (item: GroceryListItem, saveInHistory: boolean) => {
+    const updatedItem = {
+      ...item,
+      amount: item.amount + item.type.amountMultiplier,
+    };
+    updateGroceryItem.mutate(updatedItem);
     if (saveInHistory) {
       setHistory((history) => [
         ...history,
         {
           type: 'INCREASE_AMOUNT',
-          item: itemToIncreaseAmount,
+          item: updatedItem,
         },
       ]);
     }
   };
 
-  const decreaseAmount = (
-    itemToDecreaseAmount: GroceryListItem,
-    saveInHistory: boolean
-  ) => {
-    setGroceryItems((groceryItems) =>
-      groceryItems.map((item) =>
-        item.id !== itemToDecreaseAmount.id
-          ? item
-          : {
-              ...item,
-              amount: item.amount - item.type.amountMultiplier,
-            }
-      )
-    );
+  const decreaseAmount = (item: GroceryListItem, saveInHistory: boolean) => {
+    const updatedItem = {
+      ...item,
+      amount: item.amount - item.type.amountMultiplier,
+    };
+    updateGroceryItem.mutate(updatedItem);
     if (saveInHistory) {
       setHistory((history) => [
         ...history,
         {
           type: 'DECRASE_AMOUNT',
-          item: itemToDecreaseAmount,
+          item: updatedItem,
         },
       ]);
     }
@@ -197,22 +252,18 @@ function Main() {
     saveInHistory: boolean
   ) => {
     console.debug('Complete', item);
-    const completedItem: GroceryListItem = {
+    const updatedItem: GroceryListItem = {
       ...item,
       status: 'bought',
       boughtAt: new Date(),
     };
-    setGroceryItems((groceryItems) =>
-      groceryItems.map((item) =>
-        item.id !== completedItem.id ? item : completedItem
-      )
-    );
+    updateGroceryItem.mutate(updatedItem);
     if (saveInHistory) {
       setHistory((history) => [
         ...history,
         {
           type: 'COMPLETE_ITEM',
-          item: completedItem,
+          item: updatedItem,
         },
       ]);
     }
@@ -220,14 +271,12 @@ function Main() {
 
   const revertCompleteItem = (item: GroceryListItem) => {
     console.debug('Revert complete', item);
-    const todoItem: GroceryListItem = {
+    const updatedItem: GroceryListItem = {
       ...item,
       status: 'todo',
       boughtAt: undefined,
     };
-    setGroceryItems((groceryItems) =>
-      groceryItems.map((item) => (item.id !== todoItem.id ? item : todoItem))
-    );
+    updateGroceryItem.mutate(updatedItem);
   };
 
   const handleSuggestionClick = (suggestion: Suggestion) => {
@@ -266,27 +315,36 @@ function Main() {
   ) => decreaseAmount(itemToDecreaseAmount, true);
 
   const todoItems = useMemo(
-    () => groceryItems.filter(({ status }) => status === 'todo'),
+    () => groceryItems?.filter(({ status }) => status === 'todo'),
     [groceryItems]
   );
-  const completedItemsByDate: { [key: string]: GroceryListItem[] } = useMemo(
-    () =>
-      groceryItems
-        .filter(({ status }) => status === 'bought')
-        .reduce((prev, item) => {
-          const key = format(item.boughtAt!, 'dd.MM.yyyy');
-          const prevByKey = prev[key] || [];
-          return {
-            ...prev,
-            [key]: [...prevByKey, item],
-          };
-        }, {} as { [key: string]: GroceryListItem[] }),
-    [groceryItems]
-  );
+  const completedItemsByDate: { [key: string]: GroceryListItem[] } | undefined =
+    useMemo(
+      () =>
+        groceryItems
+          ?.filter(({ status }) => status === 'bought')
+          .reduce((prev, item) => {
+            const key = format(item.boughtAt!, 'dd.MM.yyyy');
+            const prevByKey = prev[key] || [];
+            return {
+              ...prev,
+              [key]: [...prevByKey, item],
+            };
+          }, {} as { [key: string]: GroceryListItem[] }),
+      [groceryItems]
+    );
 
   const exactSuggestionMatch = suggestions.find(
     (item) => item.name.toLowerCase() === inputValue.toLowerCase()
   );
+
+  if (groceryItemsPending || itemTypesPending) {
+    return <div>Loading ...</div>;
+  }
+
+  if (groceryItemsError || itemTypesError) {
+    return <div>Error ...</div>;
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -333,7 +391,7 @@ function Main() {
       <div className={styles.groceryList}>
         <div className={styles.section}>
           <p className={styles.sectionHeader}>Til innkjøp</p>
-          {todoItems.map((groceryItem) => (
+          {todoItems?.map((groceryItem) => (
             <TodoGroceryListItem
               key={groceryItem.id}
               item={groceryItem}
@@ -344,17 +402,18 @@ function Main() {
             />
           ))}
         </div>
-        {Object.keys(completedItemsByDate).map((date) => (
-          <div key={`completed-at-${date}`} className={styles.section}>
-            <p className={styles.sectionHeader}>{date}</p>
-            {completedItemsByDate[date].map((groceryItem) => (
-              <CompletedGroceryListItem
-                key={groceryItem.id}
-                item={groceryItem}
-              />
-            ))}
-          </div>
-        ))}
+        {completedItemsByDate &&
+          Object.keys(completedItemsByDate).map((date) => (
+            <div key={`completed-at-${date}`} className={styles.section}>
+              <p className={styles.sectionHeader}>{date}</p>
+              {completedItemsByDate[date].map((groceryItem) => (
+                <CompletedGroceryListItem
+                  key={groceryItem.id}
+                  item={groceryItem}
+                />
+              ))}
+            </div>
+          ))}
       </div>
 
       <div className={styles.actionsMenu}>

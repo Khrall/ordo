@@ -8,8 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
-import { CreateGroceryItemDto } from './dto/create-grocery-item.dto';
-import { UpdateGroceryItemDto } from './dto/update-grocery-item.dto';
+import { CreateGroceryItemDto } from 'ordo-api/dist/create-grocery-item.dto';
+import { UpdateGroceryItemDto } from 'ordo-api/dist/update-grocery-item.dto';
 import { GroceryItemEntity } from './entities/grocery-item.entity';
 import { GroceryItemsService } from './grocery-items.service';
 
