@@ -27,10 +27,13 @@
     "@prisma/client": "^5.15.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "dotenv": "^16.4.5",
+    "keycloak-connect": "^25.0.6",
+    "nest-keycloak-connect": "^1.10.1",
+    "ordo-api": "file:../api",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "swagger-ui-express": "^5.0.1",
-    "ordo-api": "file:../api"
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

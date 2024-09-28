@@ -1,6 +1,5 @@
 version: '3.8'
 services:
-
   postgres:
     image: postgres:16.3-alpine
     restart: always
@@ -11,6 +10,22 @@ services:
       - postgres:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      - DB_VENDOR=postgres
+      - DB_ADDR=postgres
+      - DB_DATABASE=keycloak
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - 8080:8080
+    command: ['start-dev']
+    depends_on:
+      - postgres
 
 volumes:
   postgres:
